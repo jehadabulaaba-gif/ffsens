@@ -19,7 +19,8 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
 # (list) Application requirements
-requirements = python3,kivy
+# Pin target and host Python to avoid the unsupported cp314 Android wheel in the current build.
+requirements = python3==3.11.8,hostpython3==3.11.8,kivy
 
 # (str) Supported orientations
 orientation = portrait

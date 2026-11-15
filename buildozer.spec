@@ -9,11 +9,16 @@ package.name = myapp
 # (str) Package domain (needed for android packaging)
 package.domain = org.test
 
+# (str) Source directory where the main.py is located
+source.dir = .
+
 # (list) Source files to include (let it empty to include all files)
 source.include_exts = py,png,jpg,kv,atlas
 
+# (str) Application versioning
+version = 0.1
+
 # (list) Application requirements
-# أضف مكتباتك هنا مثل kivy, python3 إلخ
 requirements = python3,kivy
 
 # (str) Supported orientations
@@ -25,7 +30,7 @@ android.api = 33
 # (int) Minimum API your APK will support
 android.minapi = 24
 
-# (str) Android NDK version to use (تم إصلاح المشكلة هنا وتثبيته على الإصدار المتوافق تماماً)
+# (str) Android NDK version to use
 android.ndk = 25b
 
 # (bool) Enable AndroidX support

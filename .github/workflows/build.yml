@@ -1,0 +1,50 @@
+name: Build APK
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          df -h /
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          pip install --upgrade pip
+          pip install buildozer Cython==0.29.36 virtualenv
+      - name: Build APK
+        run: |
+          set +e
+          yes | buildozer -v android debug > build.log 2>&1
+          code=$?
+          echo "EXIT CODE: $code"
+          df -h /
+          free -h
+          echo "=== ERRORS ==="
+          grep -n -i -E "error:|Error [0-9]|fatal error|No space|Killed|Traceback|FAILED" build.log | tail -n 25
+          echo "=== LAST 40 LINES ==="
+          tail -n 40 build.log
+          exit $code
+      - name: Upload APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: bin/*.apk
+          if-no-files-found: ignore
+      - name: Upload log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log

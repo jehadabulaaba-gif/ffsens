@@ -18,8 +18,8 @@ android.api = 35
 android.minapi = 24
 android.ndk = 25b
 android.androidx = True
-# Build arm64 only: avoids the failing 32-bit Python/grp toolchain and suits modern phones.
-android.archs = arm64-v8a
+# Build for 32-bit ARM devices.
+android.archs = armeabi-v7a
 android.permissions = READ_MEDIA_VIDEO,READ_EXTERNAL_STORAGE
 android.accept_sdk_license = True
 
